@@ -1,0 +1,19 @@
+# The repository currently contains the static Field Evidence page
+# (Index.html, app.js, style.css, sw.js). The TanStack Start / Electron
+# source (src/, desktop/, inspector-portal/) is not committed, so there is
+# nothing for `vite build` to compile. Copy only the web files into a
+# dedicated publish folder (keeps SQL files, configs and node_modules private).
+[build]
+  command = "rm -rf dist/web && mkdir -p dist/web && cp Index.html app.js style.css sw.js dist/web/ && if [ -d Assets ]; then cp -r Assets dist/web/; fi"
+  publish = "dist/web"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Electron is only needed for the desktop app; skip its large binary download in CI.
+  ELECTRON_SKIP_BINARY_DOWNLOAD = "1"
+
+# The entry page is named Index.html (capital I); serve it at the site root.
+[[redirects]]
+  from = "/"
+  to = "/Index.html"
+  status = 200
